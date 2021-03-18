@@ -18,5 +18,26 @@ $.ajaxPrefilter(function (options) {
     // 手动为 url 添加路径前缀
     // console.log('http://api-breakingnews-web.itheima.net' + options.url)
     options.url = baseURL + options.url
+
+    //身份验证
+    if (options.url.indexOf('/my/') != -1) {
+        options.headers = {
+            Authorization: localStorage.getItem('token') || ''
+        }
+    }
+
+    //拦截所有响应。判断身份证 认证信息
+    options.complete = function (res) {
+        //判断状态码 如果是1 错误信息是身份认证失败  就拦截登录
+        let obj = res.responseJSON
+        if (obj.status == 1 && obj.message == '身份认证失败！') {
+            //销毁token 跳回登录页面
+            localStorage.removeItem('token')
+            //拦截登录
+            location.href = '/03-login.html'
+        }
+
+    }
+
 });
 
