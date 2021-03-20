@@ -28,7 +28,7 @@ function getUserInfo() {
         // },
         success: (res) => {
             // console.log(res);
-            console.log(123, res);
+            // console.log(123, res);
             if (res.status != 0) {
                 return layui.layer.msg(res.message, { icon: 5 })
             }
